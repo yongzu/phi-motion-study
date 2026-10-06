@@ -1,0 +1,26 @@
+{
+  "name": "phi-motion-study",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Phi 로고 인트로 모션 스터디: 공통 소스 + Remotion 스타터 + 예시",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render:ref11": "remotion render Ref11Intro out/ref11-intro.mp4",
+    "still": "remotion still",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.533",
+    "@remotion/paths": "^4.0.533",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.533",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "typescript": "^5.9.3"
+  }
+}
