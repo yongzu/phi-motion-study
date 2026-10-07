@@ -71,4 +71,5 @@ examples/            예시 결과 영상
 - 레퍼런스 영상은 저작권이 있어서 저장소에 올리지 않습니다 (`.gitignore`의 `references/`, `*.mp4`).
 - 3D 링은 WebGL을 씁니다. `remotion.config.ts`에서 `angle` GL 백엔드를 지정해 두었습니다.
 - Windows에서는 저장소 경로가 너무 길면(약 260자 이상) 렌더용 Chrome이 실행되지 않습니다. `C:\Users\<이름>\phi-motion-study`처럼 짧은 경로에 클론하세요.
+- `npm install` 때 나오는 `allow-scripts` 경고(esbuild)는 무시해도 됩니다. 설치와 렌더에 영향이 없습니다.
 - 로고와 히어로 3D 데이터의 출처는 [phi.design](https://www.phi.design/)입니다. 스터디 목적으로 정리한 것입니다.
