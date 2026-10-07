@@ -118,6 +118,6 @@ finally { Pop-Location }
 Write-Host ""
 Write-Host "준비 완료!" -ForegroundColor Green
 Write-Host "  폴더: $Dir"
-Write-Host "  다음: 가이드 페이지의 4단계 (레퍼런스 넣기) → 5단계에서 이 창에 $Tool 을 입력하세요."
+Write-Host "  다음: 가이드 페이지의 4단계 (레퍼런스 넣기) → 5단계에서 이 창에 $Tool 를 입력하세요."
 explorer.exe $Dir
 Set-Location $Dir
