@@ -7,6 +7,20 @@ Phi 로고 인트로 모션 스터디 자료입니다. **모두 같은 소스로
 
 ## 사전 준비 (스터디 전에 꼭)
 
+**한 줄 설치 (권장):** Git, Node.js, Claude Code 설치부터 프로젝트 내려받기와 렌더 테스트까지 한 번에 합니다. 이미 설치된 것은 건너뜁니다.
+
+Windows (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex
+```
+
+macOS (터미널):
+```bash
+curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | bash
+```
+
+직접 설치하려면 아래 표를 따르세요.
+
 | 설치 | 확인 명령 | 비고 |
 |---|---|---|
 | [Git](https://git-scm.com/downloads) | `git --version` | Windows는 Git for Windows (Claude Code가 Git Bash를 씀) |
@@ -42,7 +56,7 @@ npm run studio
 
 ## 진행 순서
 
-1. **레퍼런스 고르기:** 진행자가 준비한 영상 중 하나를 고릅니다.
+1. **레퍼런스 고르기:** 진행자가 준비한 영상 중 하나를 고릅니다. 고르기 전에 [`prompts/references.md`](prompts/references.md) 카탈로그를 보세요.
 2. **의도 카드 쓰기 (5분):** [`prompts/01-intent-card.md`](prompts/01-intent-card.md)
 3. **메타프롬프트로 지시:** [`prompts/02-meta-prompt.md`](prompts/02-meta-prompt.md)에 의도 카드를 붙여 Claude Code에 넣습니다. 작업 파일은 `src/MyIntro.tsx`입니다.
 4. **스토리보드 확인 → 구현 → 스틸로 검토**
