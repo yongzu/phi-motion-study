@@ -72,11 +72,6 @@ section.block { margin-top: 96px; scroll-margin-top: calc(var(--header-h) + 24px
 .block-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; }
 .block-head h2 { color: var(--ink); }
 .block-head p { color: var(--faint); }
-.block-head { flex-wrap: wrap; }
-.head-action { margin-left: auto; align-self: center; display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 999px; background: var(--ink); color: var(--on-ink); transition: transform 340ms var(--ease-move), opacity 200ms; }
-.head-action:hover { transform: translateY(-2px); }
-.head-action span { opacity: .6; font-size: .85rem; }
-.head-action[aria-disabled="true"] { background: var(--wash); color: var(--faint); cursor: default; transform: none; }
 
 /* 따라하기 단계 */
 .steps { list-style: none; padding: 0; display: flex; flex-direction: column; }
@@ -270,7 +265,7 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         </div>
         <div class="step-body">
           <p>아래 <a class="ink" href="#refs">레퍼런스 목록</a>에서 하나를 고릅니다. 처음이라면 <span class="ink">14번이나 03번</span>.</p>
-          <p><a class="ink" href="#refs">레퍼런스</a> 탭 오른쪽의 <span class="ink">레퍼런스 영상 받기</span>로 ZIP을 받아 압축을 풀고, 영상 파일들을 폴더 안의 <code>references</code> 폴더에 넣습니다. 전부 넣어도 됩니다.</p>
+          <p>진행자에게 받은 <span class="ink">레퍼런스 영상 ZIP</span>의 압축을 풀고, 영상 파일들을 폴더 안의 <code>references</code> 폴더에 넣습니다. 전부 넣어도 됩니다.</p>
           <p class="check"><code>references</code> 안에 <code>Reference_Video_14.mp4</code> 같은 파일이 있다</p>
         </div>
       </li>
@@ -338,9 +333,7 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 
   <!-- 레퍼런스 -->
   <section class="block" id="refs">
-    <div class="block-head"><h2>레퍼런스</h2><p>16개 · 영상의 "원리"만 가져오세요</p>
-      <a class="head-action" id="ref-zip" href="#refs" target="_blank" rel="noopener">레퍼런스 영상 받기 <span>ZIP · 26MB</span></a>
-    </div>
+    <div class="block-head"><h2>레퍼런스</h2><p>16개 · 영상의 "원리"만 가져오세요</p></div>
     <div class="filter" role="group" aria-label="난이도">
       <button class="chip" type="button" data-level="all" aria-pressed="true">전체</button>
       <button class="chip" type="button" data-level="1" aria-pressed="false">★ 쉬움</button>
@@ -409,7 +402,7 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         <a href="https://github.com/yongzu/phi-motion-study/archive/refs/heads/main.zip">소스 ZIP</a>
         <a href="https://github.com/yongzu/phi-motion-study" target="_blank" rel="noopener">GitHub</a>
       </div>
-      <p class="note">레퍼런스 영상 ZIP은 저장소에 올리지 않고 공유 링크로 연결합니다 (원작자 저작권). 링크는 이 페이지 스크립트의 <code>REF_ZIP_URL</code> 한 줄입니다.</p>
+      <p class="note">레퍼런스 영상 ZIP은 저작권 때문에 저장소에 올리지 않고 진행자가 따로 나눠 줍니다.</p>
     </div>
   </details>
 
@@ -419,8 +412,6 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 <button class="back-to-top" id="back-to-top" type="button" aria-label="맨 위로">↑</button>
 
 <script>
-// 레퍼런스 영상 ZIP 공유 링크 (구글 드라이브·원드라이브 등). 비어 있으면 버튼이 "링크 준비 중"으로 보인다
-const REF_ZIP_URL = '';
 const CATALOG = [
   {"n":"01","title":"Grok 4.5 런칭","len":"12초","ratio":"가로","level":2,"sources":["워드마크","점"],
    "principle":"커서와 함께 글자가 타이핑되고, 단어 사이가 벌어지며 점과 가는 선이 퍼진다. 파란 점들이 곡선을 타고 흘러와 한 줄로 정렬된다.",
@@ -505,16 +496,6 @@ document.querySelectorAll('.copy-btn').forEach((btn) => {
     try { navigator.clipboard.writeText(src.textContent).then(ok, fallback); } catch (e) { fallback(); }
   });
 });
-
-// 레퍼런스 영상 받기
-const zipBtn = document.getElementById('ref-zip');
-if (REF_ZIP_URL) { zipBtn.href = REF_ZIP_URL; }
-else {
-  zipBtn.setAttribute('aria-disabled', 'true');
-  zipBtn.removeAttribute('target');
-  zipBtn.innerHTML = '레퍼런스 영상 받기 <span>링크 준비 중 · 진행자에게 문의</span>';
-  zipBtn.addEventListener('click', (e) => e.preventDefault());
-}
 
 // 레퍼런스
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
