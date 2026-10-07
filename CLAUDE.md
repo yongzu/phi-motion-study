@@ -13,6 +13,7 @@ Phi 로고로 5~8초 인트로 모션을 만드는 스터디 프로젝트입니�
   1. 의도를 2문장으로 다시 말하고, 모호하면 질문 최대 3개
   2. 스토리보드 표를 먼저 보여주고 확인받은 뒤 구현
   3. 구현 후 핵심 프레임 스틸(`npx remotion still MyIntro out/f.png --frame=N`)로 스스로 검토
-- 수정할 때마다 사용자가 입력한 명령을 커밋 메시지로 남깁니다 (`git commit`). 푸시는 하지 않습니다.
+- 수정할 때마다 사용자가 입력한 명령을 커밋 메시지로 남깁니다 (`git commit`). 푸시는 하지 않습니다. 폴더가 Git 저장소가 아니면 (ZIP 으로 받은 경우) 커밋은 건너뜁니다.
+- Mac 에서 Node.js 를 홈 폴더에 설치한 경우 명령 앞에 `export PATH="$HOME/.local/node/bin:$HOME/.local/bin:$PATH";` 를 붙입니다.
 - 사용자가 확인할 때는 폴더의 `preview.cmd`(Mac: `preview.command`)를 더블클릭하라고 안내합니다. 최종 영상은 `render.cmd`(`render.command`) → `out/my-intro.mp4`.
 - 예시 코드: `src/examples/ref11/Ref11Intro.tsx` (점 → 선 → 타원 → 두 링 → 3D + 워드마크)
