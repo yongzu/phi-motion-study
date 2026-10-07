@@ -7,7 +7,7 @@
 ## 구성
 
 ```
-phi-logo-kit/
+kit/
 ├── preview.html            ← 소스와 id 한눈에 보기 (더블클릭으로 열기)
 ├── svg/
 │   ├── phi-mark.svg         마크 원본 (채움, 구멍 포함)
@@ -93,7 +93,7 @@ export const Example = () => {
 };
 ```
 
-필요한 패키지:
+이 저장소에는 이미 설치돼 있습니다. 다른 Remotion 프로젝트에 가져갈 때만 설치하세요.
 
 ```bash
 npm i @remotion/paths
@@ -116,6 +116,8 @@ phi.design 첫 화면에서 돌아가는 링은 영상이 아니라 **three.js�
 **쓰는 법**
 - **보기만 할 때:** `hero/player.html`을 브라우저로 여세요. three.js를 CDN에서 불러오므로 인터넷 연결이 필요합니다.
 - **Remotion에서 쓸 때:** `remotion/PhiHeroRings.tsx`를 import 합니다 (같은 폴더의 `phi-hero-rings.js`를 씁니다).
+
+다른 Remotion 프로젝트에 가져갈 때만 설치하세요 (이 저장소에는 이미 있음).
 
 ```bash
 npm i three@0.184.0 @types/three
@@ -155,15 +157,16 @@ import { HERO_MARK_POSE, HERO_MARK_SCALE, PhiHeroRings } from '../kit/remotion/P
 - WebGL을 쓰므로 이 저장소의 `remotion.config.ts`는 `angle` GL 백엔드를 지정합니다. 다른 프로젝트에서 화면이 까맣게 나오면 `--gl=angle`부터 확인하세요.
 - 저수준 API(`createPhiHero`, `heroProgressAt`, `renderProgress`)를 직접 쓰면 링 메시(`rings.big`, `rings.small`)에 접근해서 재질, 색, 추가 회전을 바꿀 수 있습니다.
 
-## 프롬프트 예시
+## 프롬프트
 
-> `phi-logo.ts`의 `ring-a`가 먼저 그려지고, 0.2초 뒤 `ring-b`가 그려진다. 둘 다 `cubic-bezier(0.35, 0, 0, 1)`, 0.8초.
-> 그다음 `line-1` → `line-2` → `line-3` 순서로 글자가 아래에서 올라온다. `i` 점(`*-dot`)은 기둥보다 0.1초 늦게 떨어진다.
-> 검정 배경, 흰 선, 가이드는 흰색 20%.
+의도 카드와 메타프롬프트는 저장소의 [`prompts/`](../prompts) 폴더에 있습니다. 소스를 지칭할 때는 위 표의 id를 그대로 쓰세요.
+
+> 예) `ring-a`가 먼저 그려지고, 0.2초 뒤 `ring-b`가 그려진다. 둘 다 `cubic-bezier(0.35, 0, 0, 1)`, 0.8초.
+> 그다음 `line-1` → `line-2` → `line-3` 순서로 글자가 아래에서 올라온다. `i`의 점(`*-dot`)은 기둥보다 0.1초 늦게 떨어진다.
 
 ## 출처
 
 - 마크: `https://www.phi.design/img/phi/logo-mark-mobile.svg`
 - 워드마크: `https://www.phi.design/img/phi/logo-wordmark-desktop-tablet.svg`
 - 히어로 링: phi.design 히어로 섹션의 three.js 코드와 키프레임 데이터 (2026-10-06 기준)
-- 스터디 내부용으로 정리한 것입니다. 외부에 공개하기 전에 브랜드 사용 범위를 확인하세요.
+- 스터디 목적으로 정리한 것입니다. 스터디 밖에서 쓰려면 브랜드 사용 범위를 확인하세요.

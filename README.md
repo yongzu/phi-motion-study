@@ -5,6 +5,24 @@ Phi 로고 인트로 모션 스터디 자료입니다. **모두 같은 소스로
 > 예시 결과물: [`examples/ref11-intro.mp4`](examples/ref11-intro.mp4) (8초)
 > 점 하나가 선이 되고, 선이 타원이 되고, 타원이 돌며 둘로 나뉘어 2D 마크가 됩니다. 마크가 3D로 깨어나 회전하면 오른쪽에 워드마크가 올라옵니다.
 
+## 사전 준비 (스터디 전에 꼭)
+
+| 설치 | 확인 명령 | 비고 |
+|---|---|---|
+| [Git](https://git-scm.com/downloads) | `git --version` | Windows는 Git for Windows (Claude Code가 Git Bash를 씀) |
+| [Node.js LTS](https://nodejs.org/) (22 이상 권장) | `node -v` | npm 포함 |
+| [Claude Code](https://code.claude.com/docs/en/setup) | `claude --version` | Windows PowerShell: `irm https://claude.ai/install.ps1 \| iex` · macOS: `curl -fsSL https://claude.ai/install.sh \| bash` · 또는 [데스크톱 앱](https://claude.com/download) |
+| Claude 계정 | `claude` 실행 후 로그인 | Pro / Max / Team 등 유료 요금제 필요. 세션에서 `/model`로 **Opus 5.5** 선택 |
+| (선택) VS Code | | 코드 보기용 |
+
+설치가 끝나면 아래 "시작하기"를 **스터디 전에 한 번** 끝까지 실행해 두세요. 첫 실행 때 Remotion이 렌더용 Chrome(약 100MB)을 내려받습니다.
+
+```bash
+npx remotion still MyIntro out/check.png --frame=100
+```
+
+`out/check.png`에 로고가 보이면 준비 완료입니다.
+
 ## 시작하기
 
 ```bash
