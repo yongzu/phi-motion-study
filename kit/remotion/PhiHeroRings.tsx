@@ -17,29 +17,37 @@ type Props = {
    * 'mark' = 2D 마크와 같은 자세(정지 상태)에서 출발해 가속하며 돌기 시작 → 2D → 3D 이어 붙일 때 사용
    */
   startAt?: number | 'mark';
+  /**
+   * 캔버스 해상도 배율. 카메라로 확대(zoom > 1)하면 3D 가 흐려지므로 줌 최댓값 이상으로 올린다.
+   * 높일수록 렌더가 느려진다.
+   */
+  pixelRatio?: number;
+  /** 3D 링 기울기 (사이트의 마우스 기울기와 같음). x, y 는 -1~1, 최대 약 16° */
+  tilt?: { x: number; y: number };
 };
 
-export const PhiHeroRings: React.FC<Props> = ({ size = 800, style = 'solid', progress, speed = 1, startAt = 0 }) => {
+export const PhiHeroRings: React.FC<Props> = ({ size = 800, style = 'solid', progress, speed = 1, startAt = 0, pixelRatio = 1, tilt }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const canvas = useRef<HTMLCanvasElement>(null);
   const hero = useRef<PhiHero | null>(null);
 
   useLayoutEffect(() => {
-    hero.current = createPhiHero({ canvas: canvas.current!, size, style, pixelRatio: 1 });
+    hero.current = createPhiHero({ canvas: canvas.current!, size, style, pixelRatio });
     return () => {
       hero.current?.dispose();
       hero.current = null;
     };
-  }, [size, style]);
+  }, [size, style, pixelRatio]);
 
   useLayoutEffect(() => {
     if (!hero.current) return;
+    hero.current.setTilt(tilt?.x ?? 0, tilt?.y ?? 0);
     // 한 바퀴(loopMs)가 끝나는 순간 = 마크 자세. 다음 바퀴는 그 자세에서 정지 상태로 출발한다
     const offset = startAt === 'mark' ? HERO_TIMING.loopMs : startAt;
     if (progress === undefined) hero.current.renderAt(offset + (frame / fps) * 1000 * speed);
     else hero.current.renderProgress(progress);
-  }, [frame, fps, progress, speed, startAt, size, style]);
+  }, [frame, fps, progress, speed, startAt, size, style, pixelRatio, tilt?.x, tilt?.y]);
 
   return <canvas ref={canvas} style={{ width: size, height: size }} />;
 };

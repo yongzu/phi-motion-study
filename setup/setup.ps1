@@ -56,16 +56,21 @@ if (Has 'node') {
 if ($needNode) { WingetInstall 'OpenJS.NodeJS.LTS' 'Node.js LTS'; Ok "Node.js $(node -v)" }
 
 # 3. Claude Code
+# 공식 설치본(claude.exe)을 쓴다. npm 으로 설치된 예전 버전은 claude.ps1 스크립트라서
+# Windows 기본 실행 정책(Restricted)에 막힌다. 실행 정책은 바꾸지 않고, claude.exe 가 먼저 잡히게 한다.
 Step 3 'Claude Code'
-RefreshPath
-if (Has 'claude') { Ok "Claude Code $(claude --version)" }
-else {
+$ClaudeBin = Join-Path $HOME '.local\bin'
+$ClaudeExe = Join-Path $ClaudeBin 'claude.exe'
+if (-not (Test-Path $ClaudeExe)) {
   Write-Host '  Claude Code 설치 중...'
   Invoke-RestMethod https://claude.ai/install.ps1 | Invoke-Expression
-  RefreshPath
-  if (Has 'claude') { Ok "Claude Code $(claude --version)" }
-  else { Write-Host '  설치는 끝났지만 새 터미널에서 claude 명령이 잡힙니다.' -ForegroundColor Yellow }
 }
+if (-not (Test-Path $ClaudeExe)) { throw 'Claude Code 설치에 실패했습니다. https://code.claude.com/docs/en/setup 을 참고해 직접 설치한 뒤 다시 실행하세요.' }
+# 사용자 PATH 맨 앞에 claude.exe 폴더를 둔다 → 새 창에서도, 이 창에서도 claude 를 바로 입력할 수 있다
+$userPath = @([Environment]::GetEnvironmentVariable('Path', 'User') -split ';' | Where-Object { $_ -and ($_.TrimEnd('\') -ne $ClaudeBin) })
+[Environment]::SetEnvironmentVariable('Path', (@($ClaudeBin) + $userPath) -join ';', 'User')
+$env:Path = $ClaudeBin + ';' + (($env:Path -split ';' | Where-Object { $_ -and ($_.TrimEnd('\') -ne $ClaudeBin) }) -join ';')
+Ok "Claude Code $(& $ClaudeExe --version)"
 
 # 4. 프로젝트 내려받기 + 패키지 설치
 Step 4 '프로젝트 내려받기'
@@ -98,5 +103,6 @@ finally { Pop-Location }
 Write-Host ""
 Write-Host "준비 완료!" -ForegroundColor Green
 Write-Host "  폴더: $Dir"
-Write-Host "  다음: 가이드 페이지의 4단계로 가세요. 이 창은 닫아도 됩니다."
+Write-Host "  다음: 가이드 페이지의 4단계 (레퍼런스 넣기) → 5단계에서 이 창에 claude 를 입력하세요."
 explorer.exe $Dir
+Set-Location $Dir

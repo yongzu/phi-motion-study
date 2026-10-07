@@ -2,6 +2,8 @@
 
 결과물: [`examples/ref11-intro.mp4`](../../examples/ref11-intro.mp4) · 코드: [`src/examples/ref11/Ref11Intro.tsx`](../../src/examples/ref11/Ref11Intro.tsx)
 
+**최종본(카메라 포함):** 컴포지션 `Ref11IntroCamera`. 같은 장면에 카메라 두 가지를 더했습니다. 점에 5배로 붙어 시작해 빠지기, 마크를 크게 보다가 빠지며 오른쪽으로 패닝해 이름 드러내기.
+
 ## 레퍼런스 분해 (Reference_Video_11, 앞 4초)
 
 상태바 아이콘이 로딩 심볼로 바뀌는 모션을 After Effects로 따라 만든 "Copy Study"입니다.

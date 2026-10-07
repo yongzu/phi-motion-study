@@ -9,6 +9,10 @@
 // 2막  3D로 회전하며 왼쪽으로 비켜서고, 오른쪽에 워드마크가 한 번에 아래에서 올라오며 나타남
 //
 // 모든 도형은 하나의 <ellipse> 다. 점 = rx·ry 가 0 에 가까운 타원, 선 = rx 만 0 에 가까운 타원.
+//
+// Ref11IntroCamera: 같은 장면에 카메라를 더한 버전 (오브젝트는 그대로, 카메라만 일한다)
+//   ① 점에 5배로 붙어 시작 → 선·타원이 커지는 동안 뒤로 빠짐
+//   ② 마크는 제자리, 카메라가 마크를 크게 보다가 빠지며 오른쪽으로 패닝 → 워드마크가 드러남
 import { AbsoluteFill, Easing, Freeze, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { phiMark, phiWordmark } from '../../../kit/remotion/phi-logo';
 import { HERO_MARK_POSE, HERO_MARK_SCALE, PhiHeroRings } from '../../../kit/remotion/PhiHeroRings';
@@ -29,6 +33,17 @@ const T = {
 
 const EASE_FUNDAMENTAL = Easing.bezier(0.83, 0, 0.17, 1); // 11번의 강한 가속·감속
 const EASE_EXPAND = Easing.bezier(0.35, 0, 0, 1); // Phi 인트로 이징
+const EASE_CAMERA = Easing.bezier(0.45, 0, 0.2, 1); // 카메라: 오브젝트보다 부드럽게
+
+// ---------- 카메라 (Ref11IntroCamera) ----------
+// 오브젝트보다 2~4 프레임 늦게 따라간다. 줌은 로그 공간에서 보간해야 일정한 속도로 느껴진다.
+const CAM = {
+  openZoom: 5, // 점에 붙어 있는 배율
+  markZoom: 1.35, // 마크만 크게 보는 배율 (워드마크가 드러나기 전)
+  pullOut: [17, 58], // ① 점 → 마크 (stretch·open 보다 3프레임 늦게)
+  reveal: [128, 170], // ② 마크 → 로크업 (빠지며 오른쪽으로)
+  pixelRatio: 2, // 3D 가 보이는 동안의 최대 줌(1.35) 이상
+} as const;
 
 // ---------- 레이아웃 ----------
 const BG = '#F5F5F3';
@@ -94,11 +109,25 @@ function ringAt(f: number, ring: Ring, popScale: number): Ellipse {
   return lerpEllipse(e, { ...pose, rotate: pose.rotate + 180, w: pose.strokeWidth }, toPose);
 }
 
-export const Ref11Intro: React.FC = () => {
+const LOCKUP_CENTER = { x: 960, y: 540 };
+const logLerp = (a: number, b: number, t: number) => Math.exp(lerp(Math.log(a), Math.log(b), t));
+function cameraAt(f: number) {
+  const pull = iv(f, CAM.pullOut, [0, 1], EASE_CAMERA);
+  const reveal = iv(f, CAM.reveal, [0, 1], EASE_CAMERA);
+  const zoom = f < CAM.reveal[0] ? logLerp(CAM.openZoom, CAM.markZoom, pull) : logLerp(CAM.markZoom, 1, reveal);
+  return { fx: lerp(MARK_HOME.x, LOCKUP_CENTER.x, reveal), fy: 540, zoom };
+}
+
+export const Ref11Intro: React.FC = () => <Ref11Scene camera={false} />;
+export const Ref11IntroCamera: React.FC = () => <Ref11Scene camera />;
+
+const Ref11Scene: React.FC<{ camera: boolean }> = ({ camera }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pop = Math.max(0, spring({ frame: f - T.pop, fps, config: { damping: 12, mass: 0.5 } }));
-  const c = { x: lerp(MARK_CENTER.x, MARK_HOME.x, iv(f, T.move3d, [0, 1], EASE_EXPAND)), y: MARK_CENTER.y };
+  // 카메라 버전: 마크는 처음부터 로크업 자리에 있고 움직이지 않는다 (카메라가 대신 움직임)
+  const c = camera ? MARK_HOME : { x: lerp(MARK_CENTER.x, MARK_HOME.x, iv(f, T.move3d, [0, 1], EASE_EXPAND)), y: MARK_CENTER.y };
+  const cam = camera ? cameraAt(f) : { fx: 960, fy: 540, zoom: 1 };
   const mark2dOpacity = iv(f, T.handoff, [1, 0]);
   const mark3dOpacity = iv(f, T.handoff, [0, 1]);
   const word = iv(f, T.word, [0, 1], EASE_EXPAND);
@@ -106,44 +135,49 @@ export const Ref11Intro: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ background: BG }}>
-      <svg width={1920} height={1080} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0 }}>
-        {/* 1막: 점 → 선 → 타원 → 회전하며 둘로 */}
-        {mark2dOpacity > 0 && (
-          <g opacity={mark2dOpacity} transform={`translate(${c.x - 400 * K} ${c.y - 400 * K}) scale(${K})`} fill="none" stroke={INK}>
-            {/* 점·선 구간: 아주 납작한 타원은 끝이 각져 보이므로 둥근 끝 선으로 그리고, 타원이 벌어지기 시작하면 넘긴다 */}
-            {lineOpacity > 0 && (() => {
-              const e = ringAt(f, RING_A, pop);
-              return (
-                <line x1={e.cx} y1={e.cy - e.ry} x2={e.cx} y2={e.cy + e.ry}
-                  strokeWidth={e.w} strokeLinecap="round" opacity={lineOpacity} />
-              );
-            })()}
-            {f >= T.open[0] &&
-              [RING_B, RING_A].map((r) => {
-                const e = ringAt(f, r, pop);
-                return <ellipse key={r.id} cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} strokeWidth={e.w} transform={`rotate(${e.rotate} ${e.cx} ${e.cy})`} />;
-              })}
-          </g>
-        )}
+      <AbsoluteFill style={{
+        transformOrigin: '0 0',
+        transform: `translate(960px, 540px) scale(${cam.zoom}) translate(${-cam.fx}px, ${-cam.fy}px)`,
+      }}>
+        <svg width={1920} height={1080} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0 }}>
+          {/* 1막: 점 → 선 → 타원 → 회전하며 둘로 */}
+          {mark2dOpacity > 0 && (
+            <g opacity={mark2dOpacity} transform={`translate(${c.x - 400 * K} ${c.y - 400 * K}) scale(${K})`} fill="none" stroke={INK}>
+              {/* 점·선 구간: 아주 납작한 타원은 끝이 각져 보이므로 둥근 끝 선으로 그리고, 타원이 벌어지기 시작하면 넘긴다 */}
+              {lineOpacity > 0 && (() => {
+                const e = ringAt(f, RING_A, pop);
+                return (
+                  <line x1={e.cx} y1={e.cy - e.ry} x2={e.cx} y2={e.cy + e.ry}
+                    strokeWidth={e.w} strokeLinecap="round" opacity={lineOpacity} />
+                );
+              })()}
+              {f >= T.open[0] &&
+                [RING_B, RING_A].map((r) => {
+                  const e = ringAt(f, r, pop);
+                  return <ellipse key={r.id} cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} strokeWidth={e.w} transform={`rotate(${e.rotate} ${e.cx} ${e.cy})`} />;
+                })}
+            </g>
+          )}
 
-        {/* 2막 워드마크: 한 번에, 아래에서 위로 올라오며 투명 → 불투명 */}
-        {word > 0 && (
-          <g opacity={word} transform={`translate(${WM.x} ${WM.y + (1 - word) * WORD_RISE}) scale(${WM_K})`} fill={INK}>
-            {phiWordmark.glyphs.map((g) => (
-              <path key={g.id} d={g.d} />
-            ))}
-          </g>
-        )}
-      </svg>
+          {/* 2막 워드마크: 한 번에, 아래에서 위로 올라오며 투명 → 불투명 */}
+          {word > 0 && (
+            <g opacity={word} transform={`translate(${WM.x} ${WM.y + (1 - word) * WORD_RISE}) scale(${WM_K})`} fill={INK}>
+              {phiWordmark.glyphs.map((g) => (
+                <path key={g.id} d={g.d} />
+              ))}
+            </g>
+          )}
+        </svg>
 
-      {/* 2막: 3D 링 — 마크 자세에서 깨어나 한 바퀴(5.61초 ÷ 1.5) 돌고 다시 마크 자세로 멈춘다 */}
-      <Sequence from={T.handoff[0]} layout="none">
-        <div style={{ position: 'absolute', left: c.x - S3 / 2, top: c.y - S3 / 2, opacity: mark3dOpacity }}>
-          <Freeze frame={HERO_LOOP_FRAMES} active={f - T.handoff[0] >= HERO_LOOP_FRAMES}>
-            <PhiHeroRings size={S3} startAt="mark" speed={HERO_SPEED} />
-          </Freeze>
-        </div>
-      </Sequence>
+        {/* 2막: 3D 링 — 마크 자세에서 깨어나 한 바퀴(5.61초 ÷ 1.5) 돌고 다시 마크 자세로 멈춘다 */}
+        <Sequence from={T.handoff[0]} layout="none">
+          <div style={{ position: 'absolute', left: c.x - S3 / 2, top: c.y - S3 / 2, opacity: mark3dOpacity }}>
+            <Freeze frame={HERO_LOOP_FRAMES} active={f - T.handoff[0] >= HERO_LOOP_FRAMES}>
+              <PhiHeroRings size={S3} startAt="mark" speed={HERO_SPEED} pixelRatio={camera ? CAM.pixelRatio : 1} />
+            </Freeze>
+          </div>
+        </Sequence>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

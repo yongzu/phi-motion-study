@@ -78,6 +78,6 @@ npx remotion still MyIntro out/check.png --frame=100 --log=error
 echo
 printf '\033[32m준비 완료!\033[0m\n'
 echo "  폴더: $DIR"
-echo "  다음: 가이드 페이지의 4단계로 가세요. 이 창은 닫아도 됩니다."
+echo "  다음: 가이드 페이지의 4단계 (레퍼런스 넣기) → 5단계에서 이 창에 claude 를 입력하세요."
 chmod +x "$DIR"/*.command 2>/dev/null || true
 open "$DIR" 2>/dev/null || true
