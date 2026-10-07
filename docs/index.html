@@ -50,6 +50,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .os-switch button { padding: 4px 12px; border-radius: 999px; color: var(--faint); transition: color 200ms; }
 .os-switch button:hover { color: var(--ink); }
 .os-switch button[aria-pressed="true"] { color: var(--ink); background: var(--bg); box-shadow: var(--shadow); }
+.tool-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 28px; padding: 12px 14px; border-radius: 12px; background: var(--wash); }
+.tool-switch > span { color: var(--muted); margin-right: 6px; }
+.tool-switch button { padding: 5px 14px; border-radius: 999px; color: var(--faint); transition: color 200ms, background 200ms; }
+.tool-switch button:hover { color: var(--ink); }
+.tool-switch button[aria-pressed="true"] { color: var(--ink); background: var(--bg); box-shadow: var(--shadow); }
 .mode-switch { display: flex; gap: 6px; margin: -8px 0 20px; }
 .mode-switch button { padding: 6px 14px; border-radius: 999px; color: var(--faint); border: 1px solid var(--rule); transition: color 200ms, background 200ms, border-color 200ms; }
 .mode-switch button:hover { color: var(--ink); }
@@ -197,9 +202,14 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 
   <!-- 따라하기 -->
   <section class="block" id="steps">
+    <div class="tool-switch" role="group" aria-label="내 AI 도구">
+      <span>내 AI 도구</span>
+      <button type="button" data-tool="claude" aria-pressed="true">Claude Code</button>
+      <button type="button" data-tool="codex" aria-pressed="false">GPT (Codex)</button>
+    </div>
     <div class="block-head"><h2>따라하기</h2>
       <p data-os-show="win">Windows · 스터디 전에 1~3단계, 스터디 때 4~7단계</p>
-      <p data-os-show="mac" data-mac-mode="claude" hidden>Mac · Claude로 설치 · 스터디 전에 1~5단계, 스터디 때 6~7단계</p>
+      <p data-os-show="mac" data-mac-mode="claude" hidden>Mac · AI로 설치 · 스터디 전에 1~5단계, 스터디 때 6~7단계</p>
       <p data-os-show="mac" data-mac-mode="manual" hidden>Mac · 직접 설치 · 스터디 전에 1~5단계, 스터디 때 6~9단계</p>
     </div>
 
@@ -243,8 +253,8 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         </div>
         <div class="step-body">
           <p>아래 한 줄을 복사해서 PowerShell 창에 붙여넣고 <kbd>Enter</kbd>. (PowerShell에서는 <span class="ink">마우스 오른쪽 클릭</span>이 붙여넣기입니다.)</p>
-          <div class="code wrap"><span data-copy-src>irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex</span><button class="copy-btn" type="button">복사</button></div>
-          <p>필요한 프로그램(Git, Node.js, Claude Code)을 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 이미 설치된 건 건너뜁니다. 5분 안팎.</p>
+          <div class="code wrap"><span data-copy-src><span data-t="winEnv"></span>irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex</span><button class="copy-btn" type="button">복사</button></div>
+          <p>필요한 프로그램(Git, Node.js, <span data-t="tool">Claude Code</span>)을 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 이미 설치된 건 건너뜁니다. 5분 안팎.</p>
           <p class="note">중간에 "이 앱이 변경하도록 허용하시겠어요?" 창이 뜨면 <span class="ink">예</span>를 누르세요.</p>
           <p class="check"><span class="ink">준비 완료!</span>가 나오고 폴더 창이 열리며 아래 파일이 보인다</p>
           <div class="files">
@@ -269,17 +279,17 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 
       <li class="step" data-step="5">
         <div>
-          <div class="step-title"><span class="step-num">5</span><span class="step-name">Claude 시작하기</span></div>
+          <div class="step-title"><span class="step-num">5</span><span class="step-name"><span data-t="short">Claude</span> 시작하기</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
           <p>3단계에서 쓰던 PowerShell 창에 아래를 입력하고 <kbd>Enter</kbd>. 창을 닫았다면 2단계처럼 폴더에서 다시 연 뒤 입력하세요.</p>
-          <div class="code"><span data-copy-src>claude</span><button class="copy-btn" type="button">복사</button></div>
+          <div class="code"><span data-copy-src><span data-t="cmd">claude</span></span><button class="copy-btn" type="button">복사</button></div>
           <ol class="how">
-            <li>처음이면 브라우저가 열립니다. Claude 계정으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)</li>
-            <li>창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.</li>
+            <li data-t-html="login"></li>
+            <li data-t-html="model"></li>
           </ol>
-          <p class="check">창 아래에 입력칸이 보이고, Opus 5.5가 선택되어 있다</p>
+          <p class="check">창 아래에 입력칸이 보이고, <span data-t="modelCheck"></span></p>
         </div>
       </li>
 
@@ -289,8 +299,8 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> Claude 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
-          <div class="code wrap"><span data-copy-src>CLAUDE.md 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
+          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> <span data-t="short">Claude</span> 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
+          <div class="code wrap"><span data-copy-src><span data-t="guideFile">CLAUDE.md</span> 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
 
 레퍼런스: [번호]번 (prompts/references.md 의 [번호]번 설명 참고)
 
@@ -300,8 +310,8 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 3. 내가 더할 것 (레퍼런스에 없는 내 아이디어): [ ]
 4. 왜 이게 Phi다운가: [ ]
 5. 마지막 장면 (멈춘 화면을 말로): [ ]</span><button class="copy-btn" type="button">복사</button></div>
-          <p>Claude가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
-          <p class="check">Claude가 "MyIntro를 만들었다"고 알려준다</p>
+          <p><span data-t="short">Claude</span>가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
+          <p class="check"><span data-t="short">Claude</span>가 "MyIntro를 만들었다"고 알려준다</p>
         </div>
       </li>
 
@@ -313,7 +323,7 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         <div class="step-body">
           <ol class="how">
             <li>폴더에서 <span class="ink">preview</span>를 더블클릭 → 브라우저에서 왼쪽 목록의 <span class="ink">MyIntro</span>를 눌러 재생합니다. 이 창은 켜 두세요.</li>
-            <li>고칠 점을 Claude에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
+            <li>고칠 점을 <span data-t="short">Claude</span>에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
             <li>다 됐으면 <span class="ink">render</span>를 더블클릭 → 1분 뒤 <code>out</code> 폴더에 <code>my-intro.mp4</code>가 생깁니다.</li>
           </ol>
           <p>고칠 때는 이렇게 말하면 잘 통합니다.</p>
@@ -326,11 +336,11 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
     </ol>
 
     <div class="mode-switch" data-os-show="mac" hidden role="group" aria-label="Mac 설치 방법">
-      <button type="button" data-mode="claude" aria-pressed="true">Claude로 설치 <span>추천</span></button>
+      <button type="button" data-mode="claude" aria-pressed="true">AI로 설치 <span>추천</span></button>
       <button type="button" data-mode="manual" aria-pressed="false">직접 설치</button>
     </div>
 
-    <!-- Mac · Claude로 설치 -->
+    <!-- Mac · <span data-t="short">Claude</span>로 설치 -->
     <ol class="steps" data-os-show="mac" data-mac-mode="claude" hidden>
       <li class="step" data-step="c1">
         <div>
@@ -350,72 +360,72 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 
       <li class="step" data-step="c2">
         <div>
-          <div class="step-title"><span class="step-num">2</span><span class="step-name">Claude Code 설치</span></div>
+          <div class="step-title"><span class="step-num">2</span><span class="step-name"><span data-t="tool">Claude Code</span> 설치</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
           <ol class="how">
             <li>터미널을 엽니다. (<kbd>⌘</kbd> + <kbd>Space</kbd> → "터미널" 입력 → <kbd>Enter</kbd>)</li>
-            <li>아래 두 줄을 한 번에 복사해 붙여넣고 (<kbd>⌘</kbd> + <kbd>V</kbd>) <kbd>Enter</kbd>. Claude Code 공식 설치 명령입니다.</li>
+            <li>아래 두 줄을 한 번에 복사해 붙여넣고 (<kbd>⌘</kbd> + <kbd>V</kbd>) <kbd>Enter</kbd>. <span data-t="tool">Claude Code</span> 공식 설치 명령입니다.</li>
           </ol>
-          <div class="code wrap"><span data-copy-src>curl -fsSL https://claude.ai/install.sh | bash
+          <div class="code wrap"><span data-copy-src><span data-t="installMac"></span>
 echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc</span><button class="copy-btn" type="button">복사</button></div>
           <p>1분 정도 걸립니다. 다른 프로그램은 필요 없습니다.</p>
-          <p class="check"><span class="ink">successfully installed</span> 가 보인다</p>
+          <p class="check">설치가 끝났다는 메시지가 보인다 (빨간 오류 글자가 없다)</p>
         </div>
       </li>
 
       <li class="step" data-step="c3">
         <div>
-          <div class="step-title"><span class="step-num">3</span><span class="step-name">Claude 열고 로그인</span></div>
+          <div class="step-title"><span class="step-num">3</span><span class="step-name"><span data-t="short">Claude</span> 열고 로그인</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
           <ol class="how">
             <li>터미널을 완전히 끄고 (<kbd>⌘</kbd> + <kbd>Q</kbd>) 다시 엽니다.</li>
-            <li>아래를 붙여넣고 <kbd>Enter</kbd>. 만든 폴더로 이동해서 Claude를 엽니다.</li>
+            <li>아래를 붙여넣고 <kbd>Enter</kbd>. 만든 폴더로 이동해서 <span data-t="short">Claude</span>를 엽니다.</li>
           </ol>
-          <div class="code"><span data-copy-src>cd ~/phi-motion-study && claude</span><button class="copy-btn" type="button">복사</button></div>
+          <div class="code"><span data-copy-src>cd ~/phi-motion-study && <span data-t="cmd">claude</span></span><button class="copy-btn" type="button">복사</button></div>
           <ol class="how" style="counter-reset: how 2">
-            <li>처음이면 브라우저가 열립니다. Claude 계정으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)</li>
+            <li data-t-html="login"></li>
             <li>"이 폴더를 믿겠냐"고 물으면 <span class="ink">Yes</span>.</li>
-            <li>창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.</li>
+            <li data-t-html="model"></li>
           </ol>
-          <p class="note">"command not found: claude"가 나오면 <code>cd ~/phi-motion-study && ~/.local/bin/claude</code></p>
-          <p class="check">창 아래에 입력칸이 보이고, Opus 5.5가 선택되어 있다</p>
+          <p class="note" data-t-html="notFound"></p>
+          <p class="check">창 아래에 입력칸이 보이고, <span data-t="modelCheck"></span></p>
         </div>
       </li>
 
       <li class="step" data-step="c4">
         <div>
-          <div class="step-title"><span class="step-num">4</span><span class="step-name">Claude에게 설치 맡기기</span></div>
+          <div class="step-title"><span class="step-num">4</span><span class="step-name"><span data-t="short">Claude</span>에게 설치 맡기기</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <p>나머지 설치(Node.js, 소스 내려받기, 패키지, 테스트)는 Claude가 합니다. 아래를 복사해서 Claude 창에 붙여넣고 <kbd>Enter</kbd>.</p>
+          <p>나머지 설치(Node.js, 소스 내려받기, 패키지, 테스트)는 <span data-t="short">Claude</span>가 합니다. 아래를 복사해서 <span data-t="short">Claude</span> 창에 붙여넣고 <kbd>Enter</kbd>.</p>
           <div class="code wrap"><span data-copy-src>이 폴더에 Phi Motion Study 를 설치해줘. 아래 명령으로 설치 안내서를 읽고, 그 순서대로 진행해.
-curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/claude-setup.md</span><button class="copy-btn" type="button">복사</button></div>
+curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/ai-setup.md</span><button class="copy-btn" type="button">복사</button></div>
           <ol class="how">
-            <li>Claude가 명령을 실행해도 되는지 물으면 <span class="ink">Yes</span>를 고르고 <kbd>Enter</kbd>. 여러 번 묻습니다.</li>
-            <li>5~10분 기다립니다. Claude가 무엇을 하는지 한 문장씩 알려줍니다.</li>
+            <li data-t-html="approve"></li>
+            <li>5~10분 기다립니다. <span data-t="short">Claude</span>가 무엇을 하는지 한 문장씩 알려줍니다.</li>
           </ol>
           <p class="note">관리자 비밀번호는 묻지 않습니다. 모든 설치는 내 홈 폴더 안에만 됩니다.</p>
-          <p class="check">Claude가 "설치 완료"라고 알려주고, Finder에 폴더가 열리며 <code>preview.command</code>, <code>render.command</code>, <code>references</code> 가 보인다</p>
+          <p class="check"><span data-t="short">Claude</span>가 "설치 완료"라고 알려주고, Finder에 폴더가 열리며 <code>preview.command</code>, <code>render.command</code>, <code>references</code> 가 보인다</p>
         </div>
       </li>
 
       <li class="step" data-step="c5">
         <div>
-          <div class="step-title"><span class="step-num">5</span><span class="step-name">레퍼런스 넣고 Claude 다시 열기</span></div>
+          <div class="step-title"><span class="step-num">5</span><span class="step-name">레퍼런스 넣고 <span data-t="short">Claude</span> 다시 열기</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
           <ol class="how">
             <li>아래 <a class="ink" href="#refs">레퍼런스 목록</a>에서 하나를 고릅니다. 처음이라면 <span class="ink">14번이나 03번</span>.</li>
             <li>진행자에게 받은 레퍼런스 ZIP을 더블클릭해 풀고, 영상들을 <code>references</code> 폴더에 넣습니다.</li>
-            <li>Claude 창에 <code>/exit</code> 를 입력해 끝낸 뒤, <code>claude</code> 를 다시 입력합니다. 방금 내려받은 프로젝트 안내서를 Claude가 새로 읽게 하기 위해서입니다.</li>
+            <li><kbd>Ctrl</kbd> + <kbd>C</kbd> 를 눌러 지금 창의 <span data-t="short">Claude</span>를 끝낸 뒤 (두 번 눌러야 할 수도 있습니다), <code><span data-t="cmd">claude</span></code> 를 다시 입력합니다. 방금 내려받은 프로젝트 안내서를 <span data-t="short">Claude</span>가 새로 읽게 하기 위해서입니다.</li>
           </ol>
-          <p class="check"><code>references</code> 안에 영상이 있고, Claude가 다시 열렸다</p>
+          <p class="check"><code>references</code> 안에 영상이 있고, <span data-t="short">Claude</span>가 다시 열렸다</p>
         </div>
       </li>
 
@@ -425,8 +435,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> Claude 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
-          <div class="code wrap"><span data-copy-src>CLAUDE.md 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
+          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> <span data-t="short">Claude</span> 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
+          <div class="code wrap"><span data-copy-src><span data-t="guideFile">CLAUDE.md</span> 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
 
 레퍼런스: [번호]번 (prompts/references.md 의 [번호]번 설명 참고)
 
@@ -436,8 +446,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
 3. 내가 더할 것 (레퍼런스에 없는 내 아이디어): [ ]
 4. 왜 이게 Phi다운가: [ ]
 5. 마지막 장면 (멈춘 화면을 말로): [ ]</span><button class="copy-btn" type="button">복사</button></div>
-          <p>Claude가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
-          <p class="check">Claude가 "MyIntro를 만들었다"고 알려준다</p>
+          <p><span data-t="short">Claude</span>가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
+          <p class="check"><span data-t="short">Claude</span>가 "MyIntro를 만들었다"고 알려준다</p>
         </div>
       </li>
 
@@ -448,8 +458,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
         </div>
         <div class="step-body">
           <ol class="how">
-            <li>Claude에게 <span class="ink">"미리보기 열어줘"</span>라고 하면 브라우저에서 확인할 수 있습니다. (또는 폴더의 <code>preview.command</code> 더블클릭)</li>
-            <li>고칠 점을 Claude에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
+            <li><span data-t="short">Claude</span>에게 <span class="ink">"미리보기 열어줘"</span>라고 하면 브라우저에서 확인할 수 있습니다. (또는 폴더의 <code>preview.command</code> 더블클릭)</li>
+            <li>고칠 점을 <span data-t="short">Claude</span>에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
             <li>다 됐으면 <span class="ink">"영상으로 만들어줘"</span>. 1분 뒤 <code>out/my-intro.mp4</code>가 생깁니다. (또는 <code>render.command</code> 더블클릭)</li>
           </ol>
           <p>고칠 때는 이렇게 말하면 잘 통합니다.</p>
@@ -536,8 +546,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
         </div>
         <div class="step-body">
           <p>같은 터미널에 아래 한 줄을 붙여넣고 <kbd>Enter</kbd>.</p>
-          <div class="code wrap"><span data-copy-src>curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | bash</span><button class="copy-btn" type="button">복사</button></div>
-          <p>Claude Code를 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 3~5분.</p>
+          <div class="code wrap"><span data-copy-src>curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | <span data-t="shEnv"></span>bash</span><button class="copy-btn" type="button">복사</button></div>
+          <p><span data-t="tool">Claude Code</span>를 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 3~5분.</p>
           <p class="check"><span class="ink">준비 완료!</span>가 나오고 Finder 창이 열리며 아래 파일이 보인다</p>
           <div class="files">
             <span class="file-chip">preview <span>.command</span></span>
@@ -561,21 +571,21 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
 
       <li class="step" data-step="m7">
         <div>
-          <div class="step-title"><span class="step-num">7</span><span class="step-name">Claude 시작하기</span></div>
+          <div class="step-title"><span class="step-num">7</span><span class="step-name"><span data-t="short">Claude</span> 시작하기</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
           <ol class="how">
-            <li>터미널을 완전히 끄고 (<kbd>⌘</kbd> + <kbd>Q</kbd>) 다시 엽니다. 새로 설치한 Claude가 이때 잡힙니다.</li>
+            <li>터미널을 완전히 끄고 (<kbd>⌘</kbd> + <kbd>Q</kbd>) 다시 엽니다. 새로 설치한 <span data-t="short">Claude</span>가 이때 잡힙니다.</li>
             <li>아래를 붙여넣고 <kbd>Enter</kbd>.</li>
           </ol>
-          <div class="code"><span data-copy-src>cd ~/phi-motion-study && claude</span><button class="copy-btn" type="button">복사</button></div>
+          <div class="code"><span data-copy-src>cd ~/phi-motion-study && <span data-t="cmd">claude</span></span><button class="copy-btn" type="button">복사</button></div>
           <ol class="how" style="counter-reset: how 2">
-            <li>처음이면 브라우저가 열립니다. Claude 계정으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)</li>
-            <li>창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.</li>
+            <li data-t-html="login"></li>
+            <li data-t-html="model"></li>
           </ol>
-          <p class="note">"command not found: claude"가 나오면 <code>~/.local/bin/claude</code> 를 대신 입력하세요.</p>
-          <p class="check">창 아래에 입력칸이 보이고, Opus 5.5가 선택되어 있다</p>
+          <p class="note" data-t-html="notFound"></p>
+          <p class="check">창 아래에 입력칸이 보이고, <span data-t="modelCheck"></span></p>
         </div>
       </li>
 
@@ -585,8 +595,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> Claude 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
-          <div class="code wrap"><span data-copy-src>CLAUDE.md 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
+          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> <span data-t="short">Claude</span> 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
+          <div class="code wrap"><span data-copy-src><span data-t="guideFile">CLAUDE.md</span> 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
 
 레퍼런스: [번호]번 (prompts/references.md 의 [번호]번 설명 참고)
 
@@ -596,8 +606,8 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
 3. 내가 더할 것 (레퍼런스에 없는 내 아이디어): [ ]
 4. 왜 이게 Phi다운가: [ ]
 5. 마지막 장면 (멈춘 화면을 말로): [ ]</span><button class="copy-btn" type="button">복사</button></div>
-          <p>Claude가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
-          <p class="check">Claude가 "MyIntro를 만들었다"고 알려준다</p>
+          <p><span data-t="short">Claude</span>가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
+          <p class="check"><span data-t="short">Claude</span>가 "MyIntro를 만들었다"고 알려준다</p>
         </div>
       </li>
 
@@ -609,7 +619,7 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
         <div class="step-body">
           <ol class="how">
             <li>폴더에서 <span class="ink">preview.command</span>를 더블클릭 → 브라우저에서 왼쪽 목록의 <span class="ink">MyIntro</span>를 눌러 재생합니다. 이 창은 켜 두세요.</li>
-            <li>고칠 점을 Claude에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
+            <li>고칠 점을 <span data-t="short">Claude</span>에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
             <li>다 됐으면 <span class="ink">render.command</span>를 더블클릭 → 1분 뒤 <code>out</code> 폴더에 <code>my-intro.mp4</code>가 생깁니다.</li>
           </ol>
           <p class="note">더블클릭했을 때 "열 수 없습니다"가 나오면 파일을 오른쪽 클릭 → 열기. 그래도 안 되면 터미널 새 탭(<kbd>⌘</kbd> + <kbd>T</kbd>)에서 <code>cd ~/phi-motion-study && npm run studio</code></p>
@@ -670,14 +680,14 @@ curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/
     <ul class="faq">
       <li data-os-show="win"><span>주소창에 powershell을 쳐도 안 열림</span><span>시작 메뉴에서 PowerShell을 열고 <code>cd ~phi-motion-study</code> 를 입력한 뒤 3단계로.</span></li>
       <li data-os-show="win"><span>설치가 중간에 멈춤</span><span>창을 닫고 2단계부터 다시. 이미 된 부분은 건너뜁니다.</span></li>
-      <li data-os-show="win"><span>"스크립트를 실행할 수 없으므로" 오류</span><span>예전에 다른 방법으로 설치한 Claude Code가 막힌 것입니다. 3단계 설치 명령을 한 번 더 붙여넣으면 고쳐집니다.</span></li>
-      <li data-os-show="win"><span>claude를 입력해도 없다고 나옴</span><span>창을 닫고 2단계처럼 폴더에서 새로 연 뒤 다시 입력하세요.</span></li>
+      <li data-os-show="win"><span>"스크립트를 실행할 수 없으므로" 오류</span><span>예전에 다른 방법으로 설치한 <span data-t="tool">Claude Code</span>가 막힌 것입니다. 3단계 설치 명령을 한 번 더 붙여넣으면 고쳐집니다.</span></li>
+      <li data-os-show="win"><span><span data-t="cmd">claude</span>를 입력해도 없다고 나옴</span><span>창을 닫고 2단계처럼 폴더에서 새로 연 뒤 다시 입력하세요.</span></li>
       <li data-os-show="win"><span>영상 만들기가 Chrome 오류로 실패</span><span>폴더 경로가 깁니다. 폴더를 <code>C:Users이름</code> 바로 아래로 옮기세요.</span></li>
-      <li data-os-show="mac" hidden><span>Claude가 설치하다 멈춤</span><span>Claude가 요약해 준 오류를 진행자에게 보여주세요. 급하면 위의 <span class="ink">직접 설치</span> 탭으로 진행해도 됩니다. 이미 된 부분은 그대로 이어집니다.</span></li>
+      <li data-os-show="mac" hidden><span><span data-t="short">Claude</span>가 설치하다 멈춤</span><span><span data-t="short">Claude</span>가 요약해 준 오류를 진행자에게 보여주세요. 급하면 위의 <span class="ink">직접 설치</span> 탭으로 진행해도 됩니다. 이미 된 부분은 그대로 이어집니다.</span></li>
       <li data-os-show="mac" hidden><span>xcode-select 설치 창이 안 뜸</span><span>이미 설치된 경우입니다. <code>git --version</code> 이 나오면 4단계로. 안 나오면 시스템 설정 → 일반 → 소프트웨어 업데이트에서 Command Line Tools를 설치하세요.</span></li>
       <li data-os-show="mac" hidden><span>node -v 가 "command not found"</span><span>Node.js 설치 뒤 터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 완전히 끄고 다시 열었는지 확인하세요.</span></li>
       <li data-os-show="mac" hidden><span>설치 명령이 "Node.js 20 이상이 필요합니다"로 멈춤</span><span>4단계(Node.js 설치)를 먼저 끝내고, 터미널을 다시 연 뒤 <code>cd ~/phi-motion-study</code> → 5단계 명령을 다시 붙여넣으세요.</span></li>
-      <li data-os-show="mac" hidden><span>claude 가 "command not found"</span><span>터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 끄고 다시 연 뒤 입력하세요. 그래도 안 되면 <code>~/.local/bin/claude</code></span></li>
+      <li data-os-show="mac" hidden><span><span data-t="cmd">claude</span> 가 "command not found"</span><span>터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 끄고 다시 연 뒤 입력하세요. 그래도 안 되면 <span data-t-html="notFoundShort"></span></span></li>
       <li data-os-show="mac" hidden><span>preview.command 가 "열 수 없습니다"</span><span>파일을 오른쪽 클릭 → 열기. 또는 터미널에서 <code>cd ~/phi-motion-study && npm run studio</code></span></li>
       <li><span>결과가 생각과 다름</span><span>바로 고치지 말고 "스토리보드부터 다시 보여줘". 표에서 어긋난 줄을 짚어 고칩니다.</span></li>
       <li><span>시간이 부족함</span><span>3D는 빼고 2D만 완성하세요.</span></li>
@@ -767,6 +777,39 @@ const store = {
 };
 
 // 내 컴퓨터 고르기
+const TOOLS = {
+  claude: {
+    tool: 'Claude Code', short: 'Claude', cmd: 'claude', guideFile: 'CLAUDE.md',
+    winEnv: '', shEnv: '',
+    installMac: 'curl -fsSL https://claude.ai/install.sh | bash',
+    modelCheck: 'Opus 5.5가 선택되어 있다',
+    login: '처음이면 브라우저가 열립니다. <span class="ink">Claude 계정</span>으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)',
+    model: '창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.',
+    approve: 'Claude가 명령을 실행해도 되는지 물으면 <span class="ink">Yes</span>를 고르고 <kbd>Enter</kbd>. 여러 번 묻습니다.',
+    notFound: '"command not found: claude"가 나오면 <code>cd ~/phi-motion-study && ~/.local/bin/claude</code>',
+    notFoundShort: '<code>~/.local/bin/claude</code>',
+  },
+  codex: {
+    tool: 'Codex', short: 'Codex', cmd: 'codex', guideFile: 'AGENTS.md',
+    winEnv: "$env:PHI_TOOL='codex'; ", shEnv: 'PHI_TOOL=codex ',
+    installMac: 'curl -fsSL https://chatgpt.com/codex/install.sh | sh',
+    modelCheck: '최신 GPT 모델이 선택되어 있다',
+    login: '처음이면 <span class="ink">Sign in with ChatGPT</span>를 고르고 ChatGPT 계정으로 로그인하세요. (Plus·Pro·Business 등 유료 요금제)',
+    model: '창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → 목록에서 <span class="ink">가장 최신 GPT 모델</span>을 고릅니다.',
+    approve: 'Codex가 명령 실행이나 인터넷 사용을 승인해 달라고 하면 <span class="ink">허용(Yes / Approve)</span>을 고릅니다. 여러 번 묻습니다.',
+    notFound: '"command not found: codex"가 나오면 터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 끄고 다시 열어 보세요.',
+    notFoundShort: '터미널을 다시 여세요.',
+  },
+};
+let tool = store.get('tool') || 'claude';
+function applyTool() {
+  const t = TOOLS[tool];
+  document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t[el.dataset.t]; });
+  document.querySelectorAll('[data-t-html]').forEach((el) => { el.innerHTML = t[el.dataset.tHtml]; });
+  document.querySelectorAll('.tool-switch button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tool === tool)));
+}
+document.querySelectorAll('.tool-switch button').forEach((b) => b.addEventListener('click', () => { tool = b.dataset.tool; store.set('tool', tool); applyTool(); }));
+applyTool();
 let currentOS = 'win';
 let macMode = store.get('macMode') || 'claude';
 function applyVisibility() {

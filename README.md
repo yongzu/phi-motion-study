@@ -21,6 +21,15 @@ macOS (터미널):
 curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | bash
 ```
 
+**Claude 대신 GPT(Codex)를 쓴다면:** 위 명령 앞에 도구를 지정하세요. 프로젝트 안내서는 Claude Code 가 `CLAUDE.md`, Codex 가 `AGENTS.md` 를 읽습니다 (같은 내용).
+
+```powershell
+$env:PHI_TOOL='codex'; irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex
+```
+```bash
+curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | PHI_TOOL=codex bash
+```
+
 직접 설치하려면 아래 표를 따르세요.
 
 | 설치 | 확인 명령 | 비고 |

@@ -1,12 +1,13 @@
-# Phi Motion Study 설치 안내서 (Claude Code 용)
+# Phi Motion Study 설치 안내서 (AI 코딩 도우미용: Claude Code · Codex)
 
-이 문서는 사용자가 Claude Code 에게 "이 안내서대로 설치해줘"라고 했을 때 Claude 가 따르는 절차입니다.
+이 문서는 사용자가 AI 코딩 도우미(Claude Code 또는 Codex)에게 "이 안내서대로 설치해줘"라고 했을 때 도우미가 따르는 절차입니다. 아래에서 "도우미"는 이 문서를 읽는 당신입니다.
 사용자는 대부분 Mac 을 쓰는 디자이너이고 터미널에 익숙하지 않습니다.
 
 ## 지켜야 할 것
 - 단계마다 무엇을 하는지 **쉬운 한국어 한 문장**으로 먼저 말하고 실행합니다.
 - `sudo` 는 쓰지 않습니다. 시스템 설정이나 보안 설정은 바꾸지 않습니다. 모든 설치는 사용자 홈 폴더 안에만 합니다.
 - 이미 된 단계는 확인만 하고 건너뜁니다.
+- 인터넷 접속이나 폴더 밖 쓰기가 샌드박스에 막히면, 이유를 한 문장으로 설명하고 사용자에게 실행 승인을 요청합니다.
 - 명령이 실패하면 원인을 한 문장으로 설명하고 한 번 다시 시도합니다. 그래도 안 되면 멈추고, 사용자가 진행자에게 보여줄 수 있게 오류 메시지를 요약합니다.
 - 모든 명령은 **현재 폴더**(`pwd`)를 기준으로 합니다.
 
@@ -30,7 +31,7 @@ grep -qs '.local/node/bin' ~/.zshrc || echo 'export PATH="$HOME/.local/node/bin:
 export PATH="$HOME/.local/node/bin:$PATH"
 node -v
 ```
-이후 이 세션의 모든 명령 앞에 `export PATH="$HOME/.local/node/bin:$HOME/.local/bin:$PATH";` 를 붙여 실행합니다 (Claude 의 셸은 `~/.zshrc` 를 다시 읽지 않습니다).
+이후 이 세션의 모든 명령 앞에 `export PATH="$HOME/.local/node/bin:$HOME/.local/bin:$PATH";` 를 붙여 실행합니다 (도우미의 셸은 `~/.zshrc` 를 다시 읽지 않습니다).
 
 Windows 라면 이 안내서 대신 가이드의 Windows 설치 명령(`setup/setup.ps1`)을 쓰라고 안내하고 멈춥니다.
 
@@ -64,11 +65,11 @@ npm ci --no-audit --no-fund
 ```bash
 npx remotion still MyIntro out/check.png --frame=100
 ```
-처음에는 렌더용 Chrome 을 내려받느라 1~2분 걸립니다. 끝나면 `out/check.png` 를 직접 열어 보고 (이미지를 읽어서) Phi 로고가 보이는지 확인합니다.
+처음에는 렌더용 Chrome 을 내려받느라 1~2분 걸립니다. 끝나면 `out/check.png` 를 직접 열어 보고 (이미지를 볼 수 있다면) Phi 로고가 보이는지 확인합니다. 이미지를 볼 수 없으면 파일이 생겼는지만 확인합니다.
 
 ## 6. 마무리
 - `open .` 으로 Finder 에서 폴더를 엽니다.
 - 사용자에게 아래를 그대로 안내합니다.
   1. 진행자에게 받은 레퍼런스 영상 ZIP 을 풀어 `references` 폴더에 넣으세요.
-  2. 이 창에 `/exit` 를 입력해 Claude 를 끝낸 뒤, `claude` 를 다시 입력하세요. (프로젝트 안내서 `CLAUDE.md` 를 새로 읽게 하기 위해서입니다.)
+  2. `Ctrl + C` 를 눌러 지금 도우미를 끝낸 뒤(두 번 눌러야 할 수도 있음), 같은 창에 다시 `claude` (Codex 라면 `codex`) 를 입력하세요. 방금 받은 프로젝트 안내서(`CLAUDE.md` / `AGENTS.md`)를 새로 읽게 하기 위해서입니다.
   3. 그다음 가이드 페이지의 "첫 메시지"를 붙여넣으면 시작입니다.

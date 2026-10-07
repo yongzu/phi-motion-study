@@ -7,7 +7,7 @@
 # 하는 일
 #   1. Git 이 없으면 Xcode Command Line Tools 설치 안내
 #   2. Node.js 가 없으면 Homebrew 로 설치 (Homebrew 가 없으면 nodejs.org 안내)
-#   3. Claude Code 가 없으면 공식 설치 스크립트로 설치
+#   3. Claude Code 가 없으면 공식 설치 스크립트로 설치 (Codex: ... | PHI_TOOL=codex bash)
 #   4. 홈 폴더에 phi-motion-study 를 내려받고 npm 패키지 설치
 #   5. 렌더 테스트 (out/check.png)
 #
@@ -48,13 +48,23 @@ if [ "$need_node" = 1 ]; then
   fi
 fi
 
-step 3 "Claude Code"
-if has claude; then ok "Claude Code $(claude --version)"; else
-  echo "  Claude Code 설치 중..."
-  curl -fsSL https://claude.ai/install.sh | bash
-  has claude && ok "Claude Code $(claude --version)" || echo "  설치는 끝났지만 새 터미널에서 claude 명령이 잡힙니다."
+TOOL="${PHI_TOOL:-claude}"
+if [ "$TOOL" = "codex" ]; then
+  step 3 "Codex (GPT)"
+  if has codex; then ok "Codex $(codex --version)"; else
+    echo "  Codex 설치 중..."
+    curl -fsSL https://chatgpt.com/codex/install.sh | sh
+    has codex && ok "Codex $(codex --version)" || echo "  설치는 끝났지만 새 터미널에서 codex 명령이 잡힙니다."
+  fi
+else
+  step 3 "Claude Code"
+  if has claude; then ok "Claude Code $(claude --version)"; else
+    echo "  Claude Code 설치 중..."
+    curl -fsSL https://claude.ai/install.sh | bash
+    has claude && ok "Claude Code $(claude --version)" || echo "  설치는 끝났지만 새 터미널에서 claude 명령이 잡힙니다."
+  fi
 fi
-# 터미널을 다시 열었을 때 claude 가 잡히도록 (Mac 기본 셸 zsh)
+# 터미널을 다시 열었을 때 claude / codex 가 잡히도록 (Mac 기본 셸 zsh)
 if ! grep -qs '.local/bin' "$HOME/.zshrc"; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
 fi
@@ -82,6 +92,6 @@ npx remotion still MyIntro out/check.png --frame=100 --log=error
 echo
 printf '\033[32m준비 완료!\033[0m\n'
 echo "  폴더: $DIR"
-echo "  다음: 가이드 페이지의 6단계 (레퍼런스 넣기) → 7단계 (터미널을 ⌘Q 로 끄고 다시 열어 claude 시작)"
+echo "  다음: 가이드 페이지의 6단계 (레퍼런스 넣기) → 7단계 (터미널을 ⌘Q 로 끄고 다시 열어 $TOOL 시작)"
 chmod +x "$DIR"/*.command 2>/dev/null || true
 open "$DIR" 2>/dev/null || true
