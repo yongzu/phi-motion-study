@@ -43,7 +43,7 @@ fi
 if [ "$need_node" = 1 ]; then
   if has brew; then echo "  Node.js 설치 중..."; brew install node; ok "Node.js $(node -v)"
   else
-    echo "  Node.js 20 이상이 필요합니다. https://nodejs.org 에서 LTS 를 설치한 뒤 다시 실행하세요."
+    echo "  Node.js 20 이상이 필요합니다. 가이드 4단계대로 nodejs.org 에서 .pkg 를 설치하고, 터미널을 다시 열어 이 명령을 다시 붙여넣으세요."
     exit 1
   fi
 fi
@@ -53,6 +53,10 @@ if has claude; then ok "Claude Code $(claude --version)"; else
   echo "  Claude Code 설치 중..."
   curl -fsSL https://claude.ai/install.sh | bash
   has claude && ok "Claude Code $(claude --version)" || echo "  설치는 끝났지만 새 터미널에서 claude 명령이 잡힙니다."
+fi
+# 터미널을 다시 열었을 때 claude 가 잡히도록 (Mac 기본 셸 zsh)
+if ! grep -qs '.local/bin' "$HOME/.zshrc"; then
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
 fi
 
 step 4 "프로젝트 내려받기"
@@ -78,6 +82,6 @@ npx remotion still MyIntro out/check.png --frame=100 --log=error
 echo
 printf '\033[32m준비 완료!\033[0m\n'
 echo "  폴더: $DIR"
-echo "  다음: 가이드 페이지의 4단계 (레퍼런스 넣기) → 5단계에서 이 창에 claude 를 입력하세요."
+echo "  다음: 가이드 페이지의 6단계 (레퍼런스 넣기) → 7단계 (터미널을 ⌘Q 로 끄고 다시 열어 claude 시작)"
 chmod +x "$DIR"/*.command 2>/dev/null || true
 open "$DIR" 2>/dev/null || true

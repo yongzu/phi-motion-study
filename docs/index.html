@@ -192,24 +192,23 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
 
   <!-- 따라하기 -->
   <section class="block" id="steps">
-    <div class="block-head"><h2>따라하기</h2><p>스터디 전에 1~3단계, 스터디 때 4~7단계</p></div>
-    <ol class="steps">
+    <div class="block-head"><h2>따라하기</h2>
+      <p data-os-show="win">Windows · 스터디 전에 1~3단계, 스터디 때 4~7단계</p>
+      <p data-os-show="mac" hidden>Mac · 스터디 전에 1~5단계, 스터디 때 6~9단계</p>
+    </div>
 
+    <!-- Windows -->
+    <ol class="steps" data-os-show="win">
       <li class="step" data-step="1">
         <div>
           <div class="step-title"><span class="step-num">1</span><span class="step-name">폴더 만들기</span></div>
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <ol class="how" data-os-show="win">
+          <ol class="how">
             <li>파일 탐색기를 엽니다. (단축키 <kbd>⊞ Win</kbd> + <kbd>E</kbd>)</li>
             <li>위쪽 주소창을 클릭하고 <code>%USERPROFILE%</code> 를 입력한 뒤 <kbd>Enter</kbd>. 내 사용자 폴더로 이동합니다.</li>
             <li>빈 곳을 마우스 오른쪽 클릭 → 새로 만들기 → 폴더. 이름을 <code>phi-motion-study</code> 로 바꿉니다.</li>
-          </ol>
-          <ol class="how" data-os-show="mac" hidden>
-            <li>Finder를 엽니다.</li>
-            <li>맨 위 메뉴에서 이동 → 홈 (단축키 <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>H</kbd>)</li>
-            <li>빈 곳을 오른쪽 클릭 → 새로운 폴더. 이름을 <code>phi-motion-study</code> 로 바꿉니다.</li>
           </ol>
           <p class="note">바탕화면이나 OneDrive 안은 피하세요. 경로가 길거나 동기화되면 영상 만들기가 실패할 수 있습니다.</p>
           <p class="check">사용자 폴더 안에 빈 <code>phi-motion-study</code> 폴더가 생겼다</p>
@@ -223,17 +222,11 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         </div>
         <div class="step-body">
           <p>터미널은 글자로 명령을 내리는 창입니다. <span class="ink">"폴더에서 연다"</span>는 건, 터미널이 그 폴더를 보고 있는 상태로 연다는 뜻입니다. 그래야 다음 단계에서 소스가 이 폴더에 들어옵니다.</p>
-          <ol class="how" data-os-show="win">
+          <ol class="how">
             <li>방금 만든 <code>phi-motion-study</code> 폴더를 더블클릭해서 들어갑니다.</li>
             <li>위쪽 주소창을 클릭하고, 주소를 지운 뒤 <code>powershell</code> 을 입력하고 <kbd>Enter</kbd>.</li>
           </ol>
-          <ol class="how" data-os-show="mac" hidden>
-            <li>터미널 앱을 엽니다. (<kbd>⌘</kbd> + <kbd>Space</kbd> → "터미널" 입력 → <kbd>Enter</kbd>)</li>
-            <li>아래 명령을 복사해 붙여넣고 <kbd>Enter</kbd>. 터미널이 그 폴더로 이동합니다.</li>
-          </ol>
-          <div class="code" data-os-show="mac" hidden><span data-copy-src>cd ~/phi-motion-study</span><button class="copy-btn" type="button">복사</button></div>
-          <p class="check" data-os-show="win">창 맨 앞에 <code>PS C:\Users\이름\phi-motion-study&gt;</code> 가 보인다</p>
-          <p class="check" data-os-show="mac" hidden>줄 앞에 <code>phi-motion-study</code> 가 보인다</p>
+          <p class="check">창 맨 앞에 <code>PS C:\Users\이름\phi-motion-study&gt;</code> 가 보인다</p>
         </div>
       </li>
 
@@ -243,16 +236,14 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <p>아래 한 줄을 복사해서 터미널에 붙여넣고 <kbd>Enter</kbd>. <span data-os-show="win">(PowerShell에서는 <span class="ink">마우스 오른쪽 클릭</span>이 붙여넣기입니다.)</span><span data-os-show="mac" hidden>(<kbd>⌘</kbd> + <kbd>V</kbd>로 붙여넣기)</span></p>
-          <div class="code wrap" data-os-show="win"><span data-copy-src>irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex</span><button class="copy-btn" type="button">복사</button></div>
-          <div class="code wrap" data-os-show="mac" hidden><span data-copy-src>curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | bash</span><button class="copy-btn" type="button">복사</button></div>
+          <p>아래 한 줄을 복사해서 PowerShell 창에 붙여넣고 <kbd>Enter</kbd>. (PowerShell에서는 <span class="ink">마우스 오른쪽 클릭</span>이 붙여넣기입니다.)</p>
+          <div class="code wrap"><span data-copy-src>irm https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.ps1 | iex</span><button class="copy-btn" type="button">복사</button></div>
           <p>필요한 프로그램(Git, Node.js, Claude Code)을 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 이미 설치된 건 건너뜁니다. 5분 안팎.</p>
-          <p class="note" data-os-show="win">중간에 "이 앱이 변경하도록 허용하시겠어요?" 창이 뜨면 <span class="ink">예</span>를 누르세요.</p>
-          <p class="note" data-os-show="mac" hidden>"Git 설치" 창이 뜨면 설치를 누르고, 끝나면 이 명령을 한 번 더 붙여넣으세요.</p>
+          <p class="note">중간에 "이 앱이 변경하도록 허용하시겠어요?" 창이 뜨면 <span class="ink">예</span>를 누르세요.</p>
           <p class="check"><span class="ink">준비 완료!</span>가 나오고 폴더 창이 열리며 아래 파일이 보인다</p>
           <div class="files">
-            <span class="file-chip">preview <span data-os-show="win">.cmd</span><span data-os-show="mac" hidden>.command</span></span>
-            <span class="file-chip">render <span data-os-show="win">.cmd</span><span data-os-show="mac" hidden>.command</span></span>
+            <span class="file-chip">preview <span>.cmd</span></span>
+            <span class="file-chip">render <span>.cmd</span></span>
             <span class="file-chip">references <span>폴더</span></span>
           </div>
         </div>
@@ -276,11 +267,9 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
           <label class="step-done"><input type="checkbox">다 했어요</label>
         </div>
         <div class="step-body">
-          <ol class="how">
-            <li>3단계에서 쓰던 창에 아래를 입력하고 <kbd>Enter</kbd>. 창을 닫았다면 2단계처럼 폴더에서 다시 연 뒤 입력하세요.</li>
-          </ol>
+          <p>3단계에서 쓰던 PowerShell 창에 아래를 입력하고 <kbd>Enter</kbd>. 창을 닫았다면 2단계처럼 폴더에서 다시 연 뒤 입력하세요.</p>
           <div class="code"><span data-copy-src>claude</span><button class="copy-btn" type="button">복사</button></div>
-          <ol class="how" start="2" style="counter-reset: how 1">
+          <ol class="how">
             <li>처음이면 브라우저가 열립니다. Claude 계정으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)</li>
             <li>창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.</li>
           </ol>
@@ -317,10 +306,171 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
         </div>
         <div class="step-body">
           <ol class="how">
-            <li><span class="ink">preview</span>를 더블클릭 → 브라우저에서 왼쪽 목록의 <span class="ink">MyIntro</span>를 눌러 재생합니다. 이 창은 켜 두세요.</li>
+            <li>폴더에서 <span class="ink">preview</span>를 더블클릭 → 브라우저에서 왼쪽 목록의 <span class="ink">MyIntro</span>를 눌러 재생합니다. 이 창은 켜 두세요.</li>
             <li>고칠 점을 Claude에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
             <li>다 됐으면 <span class="ink">render</span>를 더블클릭 → 1분 뒤 <code>out</code> 폴더에 <code>my-intro.mp4</code>가 생깁니다.</li>
           </ol>
+          <p>고칠 때는 이렇게 말하면 잘 통합니다.</p>
+          <p class="quote">점 세 개는 필요 없고, 점 하나에서 시작해줘.</p>
+          <p class="quote">글자는 하나씩이 아니라 한 번에 아래에서 위로 올라오게.</p>
+          <p class="quote">헷갈리면: 스토리보드부터 다시 보여줘.</p>
+          <p class="check"><code>my-intro.mp4</code>를 공유 폴더에 <code>내이름.mp4</code>로 올렸다</p>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Mac -->
+    <ol class="steps" data-os-show="mac" hidden>
+      <li class="step" data-step="m1">
+        <div>
+          <div class="step-title"><span class="step-num">1</span><span class="step-name">폴더 만들기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <ol class="how">
+            <li>Finder를 엽니다.</li>
+            <li>맨 위 메뉴에서 이동 → 홈. (단축키 <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>H</kbd>)</li>
+            <li>빈 곳을 오른쪽 클릭 → 새로운 폴더. 이름을 <code>phi-motion-study</code> 로 바꿉니다.</li>
+          </ol>
+          <p class="note">데스크탑이나 iCloud Drive 안은 피하세요. 동기화되면 영상 만들기가 느려지거나 실패합니다.</p>
+          <p class="check">홈 폴더(집 모양 아이콘) 안에 빈 <code>phi-motion-study</code> 폴더가 생겼다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m2">
+        <div>
+          <div class="step-title"><span class="step-num">2</span><span class="step-name">터미널 열고 폴더로 이동</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>터미널은 글자로 명령을 내리는 창입니다. Mac에 기본으로 들어 있습니다.</p>
+          <ol class="how">
+            <li><kbd>⌘</kbd> + <kbd>Space</kbd> → "터미널" 입력 → <kbd>Enter</kbd>.</li>
+            <li>아래를 복사해 붙여넣고 (<kbd>⌘</kbd> + <kbd>V</kbd>) <kbd>Enter</kbd>. 터미널이 방금 만든 폴더를 보게 됩니다.</li>
+          </ol>
+          <div class="code"><span data-copy-src>cd ~/phi-motion-study</span><button class="copy-btn" type="button">복사</button></div>
+          <p class="check">줄 앞쪽에 <code>phi-motion-study</code> 가 보인다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m3">
+        <div>
+          <div class="step-title"><span class="step-num">3</span><span class="step-name">Git 준비 (개발자 도구)</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>소스를 내려받는 데 필요한 Apple 공식 도구입니다. 아래를 붙여넣고 <kbd>Enter</kbd>.</p>
+          <div class="code"><span data-copy-src>xcode-select --install</span><button class="copy-btn" type="button">복사</button></div>
+          <ol class="how">
+            <li>창이 뜨면 <span class="ink">설치</span> → <span class="ink">동의</span>. 5~15분 걸립니다. 끝날 때까지 기다리세요.</li>
+            <li>"already installed"라고 나오면 이미 있는 것이니 그대로 다음 단계로.</li>
+          </ol>
+          <p class="check">아래를 붙여넣었을 때 <code>git version 2.xx</code> 가 나온다</p>
+          <div class="code"><span data-copy-src>git --version</span><button class="copy-btn" type="button">복사</button></div>
+        </div>
+      </li>
+
+      <li class="step" data-step="m4">
+        <div>
+          <div class="step-title"><span class="step-num">4</span><span class="step-name">Node.js 설치</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>영상을 만드는 프로그램(Remotion)이 쓰는 엔진입니다. 일반 앱처럼 설치합니다.</p>
+          <ol class="how">
+            <li><a class="ink" href="https://nodejs.org/ko/download" target="_blank" rel="noopener">nodejs.org 내려받기 페이지 ↗</a>에서 <span class="ink">LTS</span> 버전의 <span class="ink">macOS 설치 프로그램(.pkg)</span>을 받습니다.</li>
+            <li>받은 파일을 더블클릭 → 계속 → 설치. Mac 로그인 비밀번호를 한 번 묻습니다.</li>
+            <li>설치가 끝나면 <span class="ink">터미널을 완전히 끄고</span> (<kbd>⌘</kbd> + <kbd>Q</kbd>) 다시 연 뒤, 아래를 붙여넣습니다.</li>
+          </ol>
+          <div class="code"><span data-copy-src>cd ~/phi-motion-study && node -v</span><button class="copy-btn" type="button">복사</button></div>
+          <p class="check"><code>v22.x.x</code> 처럼 22 이상의 숫자가 나온다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m5">
+        <div>
+          <div class="step-title"><span class="step-num">5</span><span class="step-name">설치 명령 붙여넣기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>같은 터미널에 아래 한 줄을 붙여넣고 <kbd>Enter</kbd>.</p>
+          <div class="code wrap"><span data-copy-src>curl -fsSL https://raw.githubusercontent.com/yongzu/phi-motion-study/main/setup/setup.sh | bash</span><button class="copy-btn" type="button">복사</button></div>
+          <p>Claude Code를 설치하고, 소스를 이 폴더에 내려받고, 테스트까지 합니다. 3~5분.</p>
+          <p class="check"><span class="ink">준비 완료!</span>가 나오고 Finder 창이 열리며 아래 파일이 보인다</p>
+          <div class="files">
+            <span class="file-chip">preview <span>.command</span></span>
+            <span class="file-chip">render <span>.command</span></span>
+            <span class="file-chip">references <span>폴더</span></span>
+          </div>
+        </div>
+      </li>
+
+      <li class="step" data-step="m6">
+        <div>
+          <div class="step-title"><span class="step-num">6</span><span class="step-name">레퍼런스 고르고 넣기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>아래 <a class="ink" href="#refs">레퍼런스 목록</a>에서 하나를 고릅니다. 처음이라면 <span class="ink">14번이나 03번</span>.</p>
+          <p>진행자에게 받은 <span class="ink">레퍼런스 영상 ZIP</span>을 더블클릭해 풀고, 영상 파일들을 폴더 안의 <code>references</code> 폴더에 넣습니다. 전부 넣어도 됩니다.</p>
+          <p class="check"><code>references</code> 안에 <code>Reference_Video_14.mp4</code> 같은 파일이 있다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m7">
+        <div>
+          <div class="step-title"><span class="step-num">7</span><span class="step-name">Claude 시작하기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <ol class="how">
+            <li>터미널을 완전히 끄고 (<kbd>⌘</kbd> + <kbd>Q</kbd>) 다시 엽니다. 새로 설치한 Claude가 이때 잡힙니다.</li>
+            <li>아래를 붙여넣고 <kbd>Enter</kbd>.</li>
+          </ol>
+          <div class="code"><span data-copy-src>cd ~/phi-motion-study && claude</span><button class="copy-btn" type="button">복사</button></div>
+          <ol class="how" style="counter-reset: how 2">
+            <li>처음이면 브라우저가 열립니다. Claude 계정으로 로그인하세요. (Pro·Max·Team 등 유료 요금제)</li>
+            <li>창에 <code>/model</code> 을 입력하고 <kbd>Enter</kbd> → <span class="ink">Opus 5.5</span>를 고릅니다.</li>
+          </ol>
+          <p class="note">"command not found: claude"가 나오면 <code>~/.local/bin/claude</code> 를 대신 입력하세요.</p>
+          <p class="check">창 아래에 입력칸이 보이고, Opus 5.5가 선택되어 있다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m8">
+        <div>
+          <div class="step-title"><span class="step-num">8</span><span class="step-name">첫 메시지 보내기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <p>아래를 복사해서 <span class="ink">[ ] 안을 내 말로 채운 뒤</span> Claude 창에 붙여넣습니다. 의도 카드는 5분 동안 먼저 생각해 보세요.</p>
+          <div class="code wrap"><span data-copy-src>CLAUDE.md 와 prompts/02-meta-prompt.md 의 순서대로 진행해줘.
+
+레퍼런스: [번호]번 (prompts/references.md 의 [번호]번 설명 참고)
+
+내 의도 카드
+1. 한 문장 의도 (보는 사람이 무엇을 느끼길 바라나): [ ]
+2. 레퍼런스에서 가져올 원리 / 버릴 것: [ ]
+3. 내가 더할 것 (레퍼런스에 없는 내 아이디어): [ ]
+4. 왜 이게 Phi다운가: [ ]
+5. 마지막 장면 (멈춘 화면을 말로): [ ]</span><button class="copy-btn" type="button">복사</button></div>
+          <p>Claude가 의도를 다시 말하고, <span class="ink">스토리보드 표</span>를 먼저 보여줍니다. 괜찮으면 "좋아, 진행해", 아니면 고칠 점을 말하세요.</p>
+          <p class="check">Claude가 "MyIntro를 만들었다"고 알려준다</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="m9">
+        <div>
+          <div class="step-title"><span class="step-num">9</span><span class="step-name">보고, 고치고, 영상 만들기</span></div>
+          <label class="step-done"><input type="checkbox">다 했어요</label>
+        </div>
+        <div class="step-body">
+          <ol class="how">
+            <li>폴더에서 <span class="ink">preview.command</span>를 더블클릭 → 브라우저에서 왼쪽 목록의 <span class="ink">MyIntro</span>를 눌러 재생합니다. 이 창은 켜 두세요.</li>
+            <li>고칠 점을 Claude에 짧고 정확하게 말합니다. 고치면 미리보기에 바로 반영됩니다.</li>
+            <li>다 됐으면 <span class="ink">render.command</span>를 더블클릭 → 1분 뒤 <code>out</code> 폴더에 <code>my-intro.mp4</code>가 생깁니다.</li>
+          </ol>
+          <p class="note">더블클릭했을 때 "열 수 없습니다"가 나오면 파일을 오른쪽 클릭 → 열기. 그래도 안 되면 터미널 새 탭(<kbd>⌘</kbd> + <kbd>T</kbd>)에서 <code>cd ~/phi-motion-study && npm run studio</code></p>
           <p>고칠 때는 이렇게 말하면 잘 통합니다.</p>
           <p class="quote">점 세 개는 필요 없고, 점 하나에서 시작해줘.</p>
           <p class="quote">글자는 하나씩이 아니라 한 번에 아래에서 위로 올라오게.</p>
@@ -376,11 +526,16 @@ footer { margin-top: 96px; color: var(--faint); font-size: .85rem; }
   <section class="block" id="help">
     <div class="block-head"><h2>막혔을 때</h2></div>
     <ul class="faq">
-      <li><span>주소창에 powershell을 쳐도 안 열림</span><span>시작 메뉴에서 PowerShell을 열고 <code>cd ~\phi-motion-study</code> 를 입력한 뒤 3단계로.</span></li>
-      <li><span>설치가 중간에 멈춤</span><span>창을 닫고 2단계부터 다시. 이미 된 부분은 건너뜁니다.</span></li>
-      <li><span>"스크립트를 실행할 수 없으므로" 오류</span><span>예전에 다른 방법으로 설치한 Claude Code가 막힌 것입니다. 3단계 설치 명령을 한 번 더 붙여넣으면 고쳐집니다.</span></li>
-      <li><span>claude를 입력해도 없다고 나옴</span><span>창을 닫고 2단계처럼 폴더에서 새로 연 뒤 다시 입력하세요.</span></li>
-      <li><span>영상 만들기가 Chrome 오류로 실패</span><span>폴더 경로가 깁니다. 폴더를 <code>C:\Users\이름\</code> 바로 아래로 옮기세요.</span></li>
+      <li data-os-show="win"><span>주소창에 powershell을 쳐도 안 열림</span><span>시작 메뉴에서 PowerShell을 열고 <code>cd ~phi-motion-study</code> 를 입력한 뒤 3단계로.</span></li>
+      <li data-os-show="win"><span>설치가 중간에 멈춤</span><span>창을 닫고 2단계부터 다시. 이미 된 부분은 건너뜁니다.</span></li>
+      <li data-os-show="win"><span>"스크립트를 실행할 수 없으므로" 오류</span><span>예전에 다른 방법으로 설치한 Claude Code가 막힌 것입니다. 3단계 설치 명령을 한 번 더 붙여넣으면 고쳐집니다.</span></li>
+      <li data-os-show="win"><span>claude를 입력해도 없다고 나옴</span><span>창을 닫고 2단계처럼 폴더에서 새로 연 뒤 다시 입력하세요.</span></li>
+      <li data-os-show="win"><span>영상 만들기가 Chrome 오류로 실패</span><span>폴더 경로가 깁니다. 폴더를 <code>C:Users이름</code> 바로 아래로 옮기세요.</span></li>
+      <li data-os-show="mac" hidden><span>xcode-select 설치 창이 안 뜸</span><span>이미 설치된 경우입니다. <code>git --version</code> 이 나오면 4단계로. 안 나오면 시스템 설정 → 일반 → 소프트웨어 업데이트에서 Command Line Tools를 설치하세요.</span></li>
+      <li data-os-show="mac" hidden><span>node -v 가 "command not found"</span><span>Node.js 설치 뒤 터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 완전히 끄고 다시 열었는지 확인하세요.</span></li>
+      <li data-os-show="mac" hidden><span>설치 명령이 "Node.js 20 이상이 필요합니다"로 멈춤</span><span>4단계(Node.js 설치)를 먼저 끝내고, 터미널을 다시 연 뒤 <code>cd ~/phi-motion-study</code> → 5단계 명령을 다시 붙여넣으세요.</span></li>
+      <li data-os-show="mac" hidden><span>claude 가 "command not found"</span><span>터미널을 <kbd>⌘</kbd> + <kbd>Q</kbd>로 끄고 다시 연 뒤 입력하세요. 그래도 안 되면 <code>~/.local/bin/claude</code></span></li>
+      <li data-os-show="mac" hidden><span>preview.command 가 "열 수 없습니다"</span><span>파일을 오른쪽 클릭 → 열기. 또는 터미널에서 <code>cd ~/phi-motion-study && npm run studio</code></span></li>
       <li><span>결과가 생각과 다름</span><span>바로 고치지 말고 "스토리보드부터 다시 보여줘". 표에서 어긋난 줄을 짚어 고칩니다.</span></li>
       <li><span>시간이 부족함</span><span>3D는 빼고 2D만 완성하세요.</span></li>
     </ul>
