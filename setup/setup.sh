@@ -15,7 +15,10 @@
 set -euo pipefail
 
 REPO="https://github.com/yongzu/phi-motion-study.git"
-DIR="${PHI_DIR:-$HOME/phi-motion-study}"
+HERE="$(pwd)"
+if [ -n "${PHI_DIR:-}" ]; then DIR="$PHI_DIR"
+elif [ "$(basename "$HERE")" = "phi-motion-study" ] || [ -z "$(ls -A "$HERE")" ]; then DIR="$HERE"
+else DIR="$HOME/phi-motion-study"; fi
 step() { printf '\n\033[36m[%s/5] %s\033[0m\n' "$1" "$2"; }
 ok() { printf '  \033[32mOK\033[0m  %s\n' "$1"; }
 has() { command -v "$1" >/dev/null 2>&1; }
@@ -53,7 +56,15 @@ if has claude; then ok "Claude Code $(claude --version)"; else
 fi
 
 step 4 "프로젝트 내려받기"
-if [ -f "$DIR/package.json" ]; then ok "이미 있음: $DIR"; else git clone --quiet "$REPO" "$DIR"; ok "내려받음: $DIR"; fi
+if [ -f "$DIR/package.json" ]; then ok "이미 있음: $DIR"
+elif [ -d "$DIR" ] && [ -n "$(ls -A "$DIR")" ]; then
+  # 폴더에 이미 파일(예: references)이 있으면 그 자리에 받는다
+  git -C "$DIR" init --quiet
+  git -C "$DIR" remote add origin "$REPO"
+  git -C "$DIR" fetch --quiet origin main
+  git -C "$DIR" checkout --quiet -t origin/main
+  ok "내려받음: $DIR"
+else git clone --quiet "$REPO" "$DIR"; ok "내려받음: $DIR"; fi
 mkdir -p "$DIR/references"
 cd "$DIR"
 echo "  npm 패키지 설치 중... (1분 정도)"
@@ -66,7 +77,7 @@ npx remotion still MyIntro out/check.png --frame=100 --log=error
 
 echo
 printf '\033[32m준비 완료!\033[0m\n'
-echo "  1. 진행자가 준 레퍼런스 영상을 $DIR/references 에 넣으세요."
-echo "  2. 새 터미널에서:  cd \"$DIR\"  →  claude"
-echo "  3. Claude Code 에서 /model 로 Opus 5.5 를 고르세요."
-echo "  4. 미리보기:  npm run studio"
+echo "  폴더: $DIR"
+echo "  다음: 가이드 페이지의 4단계로 가세요. 이 창은 닫아도 됩니다."
+chmod +x "$DIR"/*.command 2>/dev/null || true
+open "$DIR" 2>/dev/null || true

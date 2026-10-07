@@ -6,14 +6,20 @@
 # 하는 일
 #   1. Git, Node.js LTS 가 없으면 winget 으로 설치
 #   2. Claude Code 가 없으면 공식 설치 스크립트로 설치
-#   3. 홈 폴더에 phi-motion-study 를 내려받고 npm 패키지 설치
+#   3. 소스를 내려받고 npm 패키지 설치
+#      - 지금 열린 폴더가 phi-motion-study 이거나 비어 있으면 → 그 폴더에
+#      - 아니면 → 홈 폴더의 phi-motion-study 에
 #   4. 렌더 테스트 (out/check.png)
 #
 # 설치 위치를 바꾸려면 먼저:  $env:PHI_DIR = "D:\phi-motion-study"
 
 $ErrorActionPreference = 'Stop'
 $Repo = 'https://github.com/yongzu/phi-motion-study.git'
-$Dir = if ($env:PHI_DIR) { $env:PHI_DIR } else { Join-Path $HOME 'phi-motion-study' }
+$Here = (Get-Location).ProviderPath
+$HereEmpty = -not (Get-ChildItem -Force -LiteralPath $Here -ErrorAction SilentlyContinue | Select-Object -First 1)
+$Dir = if ($env:PHI_DIR) { $env:PHI_DIR }
+       elseif ((Split-Path $Here -Leaf) -eq 'phi-motion-study' -or $HereEmpty) { $Here }
+       else { Join-Path $HOME 'phi-motion-study' }
 
 function Step($n, $msg) { Write-Host ""; Write-Host "[$n/5] $msg" -ForegroundColor Cyan }
 function Ok($msg) { Write-Host "  OK  $msg" -ForegroundColor Green }
@@ -65,6 +71,14 @@ else {
 Step 4 '프로젝트 내려받기'
 if ($Dir.Length -gt 120) { Write-Host "  경고: 경로가 길면 렌더가 실패할 수 있습니다. 짧은 경로를 권장합니다." -ForegroundColor Yellow }
 if (Test-Path (Join-Path $Dir 'package.json')) { Ok "이미 있음: $Dir" }
+elseif ((Test-Path $Dir) -and (Get-ChildItem -Force -LiteralPath $Dir | Select-Object -First 1)) {
+  # 폴더에 이미 파일(예: references)이 있으면 그 자리에 받는다
+  git -C $Dir init --quiet
+  git -C $Dir remote add origin $Repo
+  git -C $Dir fetch --quiet origin main
+  git -C $Dir checkout --quiet -t origin/main
+  Ok "내려받음: $Dir"
+}
 else { git clone --quiet $Repo $Dir; Ok "내려받음: $Dir" }
 New-Item -ItemType Directory -Force (Join-Path $Dir 'references') | Out-Null
 Push-Location $Dir
@@ -83,7 +97,6 @@ finally { Pop-Location }
 
 Write-Host ""
 Write-Host "준비 완료!" -ForegroundColor Green
-Write-Host "  1. 진행자가 준 레퍼런스 영상을 $Dir\references 에 넣으세요."
-Write-Host "  2. 새 터미널에서:  cd `"$Dir`"  →  claude"
-Write-Host "  3. Claude Code 에서 /model 로 Opus 5.5 를 고르세요."
-Write-Host "  4. 미리보기:  npm run studio"
+Write-Host "  폴더: $Dir"
+Write-Host "  다음: 가이드 페이지의 4단계로 가세요. 이 창은 닫아도 됩니다."
+explorer.exe $Dir

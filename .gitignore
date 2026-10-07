@@ -4,3 +4,4 @@ out/
 references/
 *.mp4
 !examples/*.mp4
+!docs/videos/*.mp4
